@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt">
+<head>
+    <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Regra | O Tarefeiro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-brand"><span class="brand-icon">⚡</span><span class="brand-name">Tarefeiro</span></div>
+    <nav class="sidebar-nav">
+        <a th:href="@{/dashboard}" class="nav-link"><i class="bi bi-grid-1x2-fill"></i><span>Dashboard</span></a>
+        <a th:href="@{/regras}" class="nav-link active"><i class="bi bi-lightning-charge-fill"></i><span>Regras</span></a>
+        <a th:href="@{/eventos}" class="nav-link"><i class="bi bi-calendar-event-fill"></i><span>Eventos</span></a>
+        <a th:href="@{/execucoes}" class="nav-link"><i class="bi bi-play-circle-fill"></i><span>Execuções</span></a>
+        <a th:href="@{/ia}" class="nav-link"><i class="bi bi-stars"></i><span>IA Assistant</span></a>
+        <div class="nav-divider"></div>
+        <a th:href="@{/utilizadores/perfil}" class="nav-link"><i class="bi bi-person-fill"></i><span>Perfil</span></a>
+        <a th:href="@{/logout}" class="nav-link nav-link-danger"><i class="bi bi-box-arrow-left"></i><span>Sair</span></a>
+    </nav>
+</div>
+<div class="main-wrapper">
+    <header class="topbar">
+        <button class="sidebar-toggle" id="sidebarToggle"><i class="bi bi-list"></i></button>
+        <div class="topbar-left">
+            <a th:href="@{/regras}" class="back-link"><i class="bi bi-arrow-left me-1"></i>Regras</a>
+            <h1 class="page-title" th:text="${regra.nome}">Nome</h1>
+        </div>
+        <div class="topbar-right">
+            <a th:href="@{/regras/{id}/editar(id=${regra.id})}" class="btn btn-ghost btn-sm"><i class="bi bi-pencil me-1"></i>Editar</a>
+        </div>
+    </header>
+    <div class="content-area">
+        <div class="detalhe-grid">
+            <div class="form-card">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;">
+                    <h3 style="font-size:1rem;font-weight:700;" th:text="${regra.nome}"></h3>
+                    <span th:class="${regra.ativa ? 'badge badge-success' : 'badge badge-secondary'}"
+                          th:text="${regra.ativa ? 'Ativa' : 'Inativa'}"></span>
+                </div>
+                <div class="rule-preview-flow" style="margin-bottom:1.5rem;">
+                    <div class="flow-box flow-condition">
+                        <div class="flow-label">SE</div>
+                        <div class="flow-value" th:text="${regra.condicaoTipo + ': ' + regra.condicaoValor}"></div>
+                    </div>
+                    <div class="flow-arrow"><i class="bi bi-arrow-right-circle-fill"></i></div>
+                    <div class="flow-box flow-action">
+                        <div class="flow-label">ENTÃO</div>
+                        <div class="flow-value" th:text="${regra.acaoTipo}"></div>
+                    </div>
+                </div>
+                <div class="info-grid">
+                    <div class="info-item"><span class="info-label">Descrição</span><span class="info-value" th:text="${regra.descricao ?: 'Sem descrição'}"></span></div>
+                    <div class="info-item"><span class="info-label">Prioridade</span><span class="info-value" th:text="${regra.prioridade}"></span></div>
+                    <div class="info-item"><span class="info-label">Execuções Totais</span><span class="info-value" th:text="${regra.execucoesTotal}"></span></div>
+                    <div class="info-item"><span class="info-label">Última Execução</span><span class="info-value" th:text="${regra.ultimaExecucao != null ? #temporals.format(regra.ultimaExecucao, 'dd/MM/yyyy HH:mm') : 'Nunca'}"></span></div>
+                    <div class="info-item"><span class="info-label">Criada em</span><span class="info-value" th:text="${#temporals.format(regra.criadoEm, 'dd/MM/yyyy HH:mm')}"></span></div>
+                    <div class="info-item"><span class="info-label">Configuração</span><span class="info-value" style="font-family:monospace;font-size:0.8rem;" th:text="${regra.acaoConfig}"></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+.detalhe-grid { max-width: 700px; }
+.info-grid { display: flex; flex-direction: column; gap: 0.75rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+.info-item { display: flex; gap: 1rem; align-items: flex-start; }
+.info-label { font-size: 0.775rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; min-width: 130px; flex-shrink: 0; }
+.info-value { font-size: 0.875rem; color: var(--text-primary); }
+</style>
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>

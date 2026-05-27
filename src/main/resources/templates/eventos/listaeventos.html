@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt">
+<head>
+    <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Eventos | O Tarefeiro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-brand"><span class="brand-icon">⚡</span><span class="brand-name">Tarefeiro</span></div>
+    <nav class="sidebar-nav">
+        <a th:href="@{/dashboard}" class="nav-link"><i class="bi bi-grid-1x2-fill"></i><span>Dashboard</span></a>
+        <a th:href="@{/regras}" class="nav-link"><i class="bi bi-lightning-charge-fill"></i><span>Regras</span></a>
+        <a th:href="@{/eventos}" class="nav-link active"><i class="bi bi-calendar-event-fill"></i><span>Eventos</span></a>
+        <a th:href="@{/execucoes}" class="nav-link"><i class="bi bi-play-circle-fill"></i><span>Execuções</span></a>
+        <a th:href="@{/ia}" class="nav-link"><i class="bi bi-stars"></i><span>IA Assistant</span></a>
+        <div class="nav-divider"></div>
+        <a th:href="@{/utilizadores/perfil}" class="nav-link"><i class="bi bi-person-fill"></i><span>Perfil</span></a>
+        <a th:href="@{/logout}" class="nav-link nav-link-danger"><i class="bi bi-box-arrow-left"></i><span>Sair</span></a>
+    </nav>
+</div>
+<div class="main-wrapper">
+    <header class="topbar">
+        <button class="sidebar-toggle" id="sidebarToggle"><i class="bi bi-list"></i></button>
+        <div class="topbar-left"><h1 class="page-title">Eventos</h1></div>
+        <div class="topbar-right">
+            <a th:href="@{/eventos/novo}" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg me-1"></i>Novo Evento</a>
+            <div class="user-chip"><div class="user-avatar" th:text="${#strings.substring(utilizador.nome, 0, 1)}">U</div></div>
+        </div>
+    </header>
+    <div class="content-area">
+        <div th:if="${sucesso}" class="alert alert-success alert-dismissible fade-in">
+            <i class="bi bi-check-circle-fill me-2"></i><span th:text="${sucesso}"></span>
+            <button type="button" class="alert-close" onclick="this.parentElement.remove()"><i class="bi bi-x-lg"></i></button>
+        </div>
+        <div th:if="${eventos.empty}" class="empty-state-large">
+            <div class="empty-icon"><i class="bi bi-calendar-x"></i></div>
+            <h3>Nenhum evento ainda</h3>
+            <p>Os eventos são detetados automaticamente ou podes criar um manualmente.</p>
+            <a th:href="@{/eventos/novo}" class="btn btn-primary"><i class="bi bi-plus-lg me-2"></i>Criar Evento Manual</a>
+        </div>
+        <div th:unless="${eventos.empty}" class="table-card">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Título</th>
+                        <th>Fonte</th>
+                        <th>Estado</th>
+                        <th>Data</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="evento : ${eventos.content}">
+                        <td>
+                            <span class="badge badge-info" th:text="${evento.tipo}"></span>
+                        </td>
+                        <td th:text="${evento.titulo}">Título</td>
+                        <td th:text="${evento.fonte ?: '-'}">-</td>
+                        <td>
+                            <span th:class="${evento.processado ? 'badge badge-success' : 'badge badge-warning'}"
+                                  th:text="${evento.processado ? 'Processado' : 'Pendente'}"></span>
+                        </td>
+                        <td th:text="${#temporals.format(evento.criadoEm, 'dd/MM/yyyy HH:mm')}"></td>
+                        <td>
+                            <a th:href="@{/eventos/{id}(id=${evento.id})}" class="btn-icon" title="Detalhes">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- Paginação -->
+            <div class="pagination" th:if="${eventos.totalPages > 1}">
+                <a th:href="@{/eventos(page=${eventos.number - 1})}" th:if="${eventos.hasPrevious()}" class="page-btn">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+                <span class="page-info" th:text="'Página ' + (${eventos.number + 1}) + ' de ' + ${eventos.totalPages}"></span>
+                <a th:href="@{/eventos(page=${eventos.number + 1})}" th:if="${eventos.hasNext()}" class="page-btn">
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>

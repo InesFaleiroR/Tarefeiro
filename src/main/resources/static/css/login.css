@@ -1,0 +1,112 @@
+/* ====================================================
+   O TAREFEIRO - Login Page Styles
+   ==================================================== */
+
+.login-body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at top left, rgba(99,102,241,0.15) 0%, transparent 50%),
+              radial-gradient(ellipse at bottom right, rgba(139,92,246,0.1) 0%, transparent 50%),
+              var(--bg-primary);
+  padding: 1.5rem;
+}
+
+.login-container {
+  display: flex;
+  align-items: stretch;
+  gap: 2rem;
+  max-width: 900px;
+  width: 100%;
+}
+
+.login-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  padding: 2.5rem;
+  flex: 1;
+  max-width: 440px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+}
+
+.login-brand { text-align: center; margin-bottom: 2rem; }
+.login-logo {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+.login-title { font-size: 1.75rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.3rem; }
+.login-subtitle { color: var(--text-muted); font-size: 0.875rem; }
+
+.login-form { display: flex; flex-direction: column; gap: 1.1rem; }
+
+.input-with-icon { position: relative; }
+.input-icon {
+  position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%);
+  color: var(--text-muted); pointer-events: none; font-size: 0.9rem;
+}
+.input-with-icon .form-input { padding-left: 2.5rem; }
+
+.toggle-password {
+  position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer;
+  color: var(--text-muted); font-size: 0.9rem;
+  transition: color var(--transition);
+}
+.toggle-password:hover { color: var(--accent); }
+
+.form-check-row { display: flex; align-items: center; justify-content: space-between; }
+
+.btn-login {
+  width: 100%;
+  padding: 0.8rem;
+  background: linear-gradient(135deg, var(--accent), var(--accent-purple));
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem; font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+  display: flex; align-items: center; justify-content: center;
+  gap: 0.5rem;
+  font-family: inherit;
+  letter-spacing: 0.01em;
+}
+.btn-login:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.4); }
+.btn-login:active { transform: translateY(0); }
+
+.login-footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+}
+.login-footer a { color: var(--accent); text-decoration: none; font-weight: 600; }
+.login-footer a:hover { text-decoration: underline; }
+
+/* Decoration cards */
+.login-decoration {
+  display: flex; flex-direction: column; justify-content: center; gap: 1rem;
+  flex: 1;
+}
+
+.deco-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  display: flex; align-items: center; gap: 1rem;
+  transition: all var(--transition);
+}
+
+.deco-card:hover { border-color: var(--accent); transform: translateX(4px); }
+.deco-card i { font-size: 1.5rem; color: var(--accent); }
+.deco-card span { font-weight: 600; color: var(--text-secondary); font-size: 0.9rem; }
+
+@media (max-width: 768px) {
+  .login-decoration { display: none; }
+  .login-card { max-width: 100%; }
+}
