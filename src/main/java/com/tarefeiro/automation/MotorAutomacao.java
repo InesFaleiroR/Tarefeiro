@@ -132,9 +132,10 @@ public class MotorAutomacao {
 
             case "EMAIL_ASSUNTO_CONTEM" -> {
 
+                // Correção aplicada: conversão explícita para String usando .toString()
                 String payload =
                         evento.getPayload() != null
-                                ? evento.getPayload().toLowerCase()
+                                ? evento.getPayload().toString().toLowerCase()
                                 : "";
 
                 String[] termos =
@@ -157,9 +158,10 @@ public class MotorAutomacao {
 
             case "LINK_DOMINIO_CONTEM" -> {
 
+                // Correção aplicada: conversão explícita para String usando .toString()
                 String payload =
                         evento.getPayload() != null
-                                ? evento.getPayload().toLowerCase()
+                                ? evento.getPayload().toString().toLowerCase()
                                 : "";
 
                 String[] dominios =

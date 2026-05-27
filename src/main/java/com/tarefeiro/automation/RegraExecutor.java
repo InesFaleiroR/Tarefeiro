@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-@Component @RequiredArgsConstructor @Slf4j
+@Component
+@RequiredArgsConstructor
+@Slf4j
 public class RegraExecutor {
     private final InterpretadorIAService iaService;
 
@@ -30,8 +32,9 @@ public class RegraExecutor {
     }
 
     private String executarResumirLink(RegraAutomacao regra, Evento evento) {
-        String url = extrairPayload(evento.getPayload(), "url", "");
-        String titulo = extrairPayload(evento.getPayload(), "titulo", evento.getTitulo());
+        String payloadStr = evento.getPayload() != null ? evento.getPayload().toString() : "";
+        String url = extrairPayload(payloadStr, "url", "");
+        String titulo = extrairPayload(payloadStr, "titulo", evento.getTitulo());
         String resumo = iaService.resumirLink(url, titulo);
         return "Resumo gerado: " + resumo;
     }

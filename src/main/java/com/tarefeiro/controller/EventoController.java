@@ -41,7 +41,10 @@ public class EventoController {
     public String criar(@AuthenticationPrincipal Utilizador u,
                         @Valid @ModelAttribute EventoDTO dto, BindingResult br,
                         Model model, RedirectAttributes ra) {
-        if (br.hasErrors()) { model.addAttribute("tiposEvento", TipoEvento.values()); return "eventos/novoevento"; }
+        if (br.hasErrors()) {
+            model.addAttribute("tiposEvento", TipoEvento.values());
+            return "eventos/novoevento";
+        }
         eventoService.criar(dto, u.getId());
         ra.addFlashAttribute("sucesso", "Evento criado e em fila de processamento!");
         return "redirect:/eventos";

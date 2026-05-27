@@ -8,27 +8,35 @@ spring:
     username: ${DB_USER:postgres}
     password: ${DB_PASSWORD:12345}
     driver-class-name: org.postgresql.Driver
+
     hikari:
+      pool-name: TarefeiroHikariPool
       maximum-pool-size: 10
       minimum-idle: 2
       connection-timeout: 30000
       idle-timeout: 600000
       max-lifetime: 1800000
-      pool-name: TarefeiroHikariPool
 
   # ── JPA / Hibernate ───────────────────────────────────────────────
   jpa:
     hibernate:
       ddl-auto: validate
+
     show-sql: false
+    open-in-view: false
+
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: false
         default_schema: public
+
         jdbc:
           time_zone: UTC
-    open-in-view: false
+          batch_size: 25
+          batch_versioned_data: true
+
+        order_inserts: true
+        order_updates: true
 
   # ── Flyway ────────────────────────────────────────────────────────
   flyway:
@@ -36,7 +44,6 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
     validate-on-migrate: true
-    repair-on-migrate: true
 
   # ── Thymeleaf ─────────────────────────────────────────────────────
   thymeleaf:
@@ -52,10 +59,12 @@ spring:
     port: ${MAIL_PORT:587}
     username: ${MAIL_USER:}
     password: ${MAIL_PASSWORD:}
+
     properties:
       mail:
         smtp:
           auth: true
+
           starttls:
             enable: true
 
@@ -63,19 +72,33 @@ spring:
   jackson:
     serialization:
       write-dates-as-timestamps: false
+
     time-zone: Europe/Lisbon
+
     default-property-inclusion: NON_NULL
+
+  # ── DevTools ──────────────────────────────────────────────────────
+  devtools:
+    restart:
+      enabled: true
+
+    livereload:
+      enabled: true
 
 # ── Servidor ──────────────────────────────────────────────────────
 server:
   port: ${PORT:8081}
+
   servlet:
     context-path: /
+
     session:
       timeout: 7d
+
       cookie:
         http-only: true
-        secure: false   # true em produção com HTTPS
+        secure: false
+
   error:
     whitelabel:
       enabled: false
@@ -84,12 +107,15 @@ server:
 management:
   endpoints:
     web:
+      base-path: /actuator
+
       exposure:
         include: health,info,metrics
-      base-path: /actuator
+
   endpoint:
     health:
       show-details: when-authorized
+
   info:
     app:
       enabled: true
@@ -103,16 +129,16 @@ openai:
     timeout-seconds: 30
     max-tokens: 1000
 
-# ── JWT ──────────────────────────────────────────────────────────
+# ── Configuração Tarefeiro ───────────────────────────────────────
 tarefeiro:
-  jwt:
-    # IMPORTANTE: Alterar este secret em produção!
-    # Gera um novo: openssl rand -base64 64
-    secret: ${JWT_SECRET:dGFyZWZlaXJvLXNlY3JldC1rZXktMjAyNS1zdXBlci1zZWN1cmUtcGxlYXNlLWNoYW5nZS1pbi1wcm9kdWN0aW9u}
-    expiration-ms: ${JWT_EXPIRATION_MS:86400000}          # 24h
-    refresh-expiration-ms: ${JWT_REFRESH_MS:604800000}    # 7 dias
 
-  # Webhook Secret (X-Webhook-Secret header)
+  jwt:
+    secret: ${JWT_SECRET:dGFyZWZlaXJvLXNlY3JldC1rZXktMjAyNS1zdXBlci1zZWN1cmUtcGxlYXNlLWNoYW5nZS1pbi1wcm9kdWN0aW9u}
+
+    expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+
+    refresh-expiration-ms: ${JWT_REFRESH_MS:604800000}
+
   webhook:
     secret: ${WEBHOOK_SECRET:webhook-secret-alterar-em-producao}
 
@@ -123,9 +149,16 @@ tarefeiro:
 
 # ── Logging ───────────────────────────────────────────────────────
 logging:
+
   level:
-    com.tarefeiro: INFO
+    root: INFO
+
+    com.tarefeiro: DEBUG
+
     org.springframework.security: WARN
-    org.hibernate.SQL: WARN
+
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
+
   pattern:
     console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"

@@ -1,5 +1,7 @@
 package com.tarefeiro.service.impl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tarefeiro.dto.EventoDTO;
 import com.tarefeiro.exception.ResourceNotFoundException;
 import com.tarefeiro.model.Evento;
@@ -14,22 +16,48 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-@Service @RequiredArgsConstructor @Slf4j @Transactional
+@Service
+@RequiredArgsConstructor
+@Slf4j
+@Transactional
 public class EventoServiceImpl implements EventoService {
     private final EventoRepository repository;
     private final UtilizadorRepository utilizadorRepository;
+    private final ObjectMapper objectMapper; // Injeção automática do conversor JSON do Spring
 
     @Override
     public Evento criar(EventoDTO dto, Long utilizadorId) {
         Utilizador u = utilizadorRepository.findById(utilizadorId)
-            .orElseThrow(() -> new ResourceNotFoundException("Utilizador", utilizadorId));
+                .orElseThrow(() -> new ResourceNotFoundException("Utilizador", utilizadorId));
+
+        // 1. Converter a String JSON vinda do DTO num Map estruturado
+        Map<String, Object> payloadMap;
+        if (dto.getPayload() != null && !dto.getPayload().trim().isEmpty()) {
+            try {
+                payloadMap = objectMapper.readValue(dto.getPayload(), new TypeReference<Map<String, Object>>() {});
+            } catch (Exception e) {
+                log.error("Erro ao converter string de payload para Map. Usando mapa vazio.", e);
+                payloadMap = new HashMap<>();
+            }
+        } else {
+            payloadMap = new HashMap<>();
+        }
+
+        // 2. Construir a entidade com o tipo correto esperado (Map)
         Evento e = Evento.builder()
-            .utilizador(u).tipo(dto.getTipo()).titulo(dto.getTitulo())
-            .descricao(dto.getDescricao()).fonte(dto.getFonte())
-            .payload(dto.getPayload() != null ? dto.getPayload() : "{}")
-            .processado(false).build();
+                .utilizador(u)
+                .tipo(dto.getTipo())
+                .titulo(dto.getTitulo())
+                .descricao(dto.getDescricao())
+                .fonte(dto.getFonte())
+                .payload(payloadMap) // Agora passa o Map corretamente configurado
+                .processado(false)
+                .build();
+
         log.info("Criando evento '{}' para utilizador {}", dto.getTitulo(), utilizadorId);
         return repository.save(e);
     }

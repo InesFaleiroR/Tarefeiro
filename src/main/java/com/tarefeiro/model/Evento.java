@@ -2,13 +2,20 @@ package com.tarefeiro.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.UUID;
 
 @Entity
 @Table(name = "eventos")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Evento {
 
     @Id
@@ -34,8 +41,9 @@ public class Evento {
     @Column(length = 100)
     private String fonte;
 
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
-    private String payload;
+    private Map<String, Object> payload;
 
     @Column(nullable = false)
     @Builder.Default
@@ -51,6 +59,9 @@ public class Evento {
     @PrePersist
     protected void onCreate() {
         criadoEm = LocalDateTime.now();
-        if (uuid == null) uuid = UUID.randomUUID();
+
+        if (uuid == null) {
+            uuid = UUID.randomUUID();
+        }
     }
 }
