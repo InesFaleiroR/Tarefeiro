@@ -30,16 +30,16 @@ O **Tarefeiro** é uma webapp de automação inteligente que combina:
 
 ## （＾ω＾） Funcionalidades Completas
 
-| Funcionalidade | Web | API REST |
-|---|---|---|
-| ⚡ Motor de Automação SE → ENTÃO | ✅ | ✅ via webhook |
-| 🤖 Assistente IA (resumos, checklists) | ✅ | - |
-| 🔑 Autenticação JWT | - | ✅ |
-| 🪝 Receber webhooks externos | - | ✅ |
-| 📊 Dashboard de estatísticas | ✅ | ✅ |
-| 🔔 Notificações in-app | ✅ | ✅ |
-| 🔒 Remember-Me persistente | ✅ | - |
-| 🌐 CORS configurado | - | ✅ |
+| Funcionalidade                         | Web | API REST         |
+|----------------------------------------|-----|------------------|
+| ⚡ Motor de Automação SE → ENTÃO        | ✅ | ✅ via webhook    |
+| 🤖 Assistente IA (resumos, checklists) | ✅ | -                |
+| 🔑 Autenticação JWT                    | -   | ✅                |
+| 🪝 Receber webhooks externos           | -   | ✅                |
+| 📊 Dashboard de estatísticas           | ✅   | ✅                |
+| 🔔 Notificações in-app                 | ✅   | ✅                |
+| 🔒 Remember-Me persistente             | ✅   | -                |
+| 🌐 CORS configurado                    | -   | ✅                |
 
 ---
 
@@ -158,10 +158,10 @@ mvnw.cmd spring-boot:run
 
 #### Credenciais de Teste
 
-| Utilizador | Email | Senha | Role |
-|---|---|---|---|
+| Utilizador    | Email                | Senha      | Role  |
+|---------------|----------------------|------------|-------|
 | Administrador | `admin@tarefeiro.pt` | `admin123` | ADMIN |
-| João Silva | `joao@exemplo.pt` | `user123` | USER |
+| João Silva    | `joao@exemplo.pt`    | `user123`  | USER  |
 
 ---
 
@@ -603,10 +603,10 @@ java -jar target/tarefeiro-1.0.0.jar  # Executar o JAR final
 
 ---
 
-## /) /) ~ ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-## ( •-• ) ~ Por que é que ainda fazes tarefas
-## /づ づ ~ manualmente?! O Tarefeiro faz isso!
-##         ~ ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+##   /) /) ~ ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+## ( •-• ) ~  Por que é que ainda fazes tarefas
+## /づ づ ~    manualmente?! O Tarefeiro faz isso!
+##         ~ ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
 ---
 
